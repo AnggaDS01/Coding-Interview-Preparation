@@ -1,0 +1,19 @@
+{
+    "name": "John",
+    "age": 30,
+    "children": [
+      {
+        "name": "Anna",
+        "age": 10
+      },
+      {
+        "name": "Ben",
+        "age": 8
+      }
+    ],
+    "address": {
+      "city": "New York",
+      "zip": "10001"
+    }
+  }
+  
