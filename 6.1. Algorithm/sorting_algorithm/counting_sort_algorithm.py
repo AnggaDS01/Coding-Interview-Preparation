@@ -18,5 +18,5 @@ def counting_sort(arr):
 
     return arr
 
-arr = [1.2, 1.1, 1.3]
+arr = [64, 34, 25, 12, 22, 11, 90, 1]
 print(counting_sort(arr))
