@@ -296,7 +296,439 @@ print(merge_sort(arr))  # (25)
 
 - **Divide and Conquer**: Algoritma ini bekerja dengan membagi array menjadi bagian kecil, lalu menggabungkannya kembali dengan cara yang terurut.
 - Merge Sort memiliki **kompleksitas waktu O(n log n)**, karena setiap kali array dibagi menjadi dua (log n), dan kita perlu menggabungkan array tersebut (O(n)).
-'''
+
+---
+# Heap Sort
+
+Heap Sort membangun heap dari array dan kemudian melakukan sorting dengan mengekstrak elemen terbesar dan menempatkannya pada posisi akhir.
+
+```python
+def heapify(arr, n, i):  # (1)
+    largest = i  # (2)
+    left = 2 * i + 1  # (3)
+    right = 2 * i + 2  # (4)
+
+    if left < n and arr[i] < arr[left]:  # (5)
+        largest = left  # (6)
+
+    if right < n and arr[largest] < arr[right]:  # (7)
+        largest = right  # (8)
+
+    if largest != i:  # (9)
+        arr[i], arr[largest] = arr[largest], arr[i]  # (10)
+        heapify(arr, n, largest)  # (11)
+
+def heap_sort(arr):  # (12)
+    n = len(arr)  # (13)
+
+    for i in range(n // 2 - 1, -1, -1):  # (14)
+        heapify(arr, n, i)  # (15)
+
+    for i in range(n - 1, 0, -1):  # (16)
+        arr[i], arr[0] = arr[0], arr[i]  # (17)
+        heapify(arr, i, 0)  # (18)
+
+    return arr  # (19)
+
+arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (20)
+print(heap_sort(arr))  # (21)
+```
+
+### Penjelasan Setiap Baris
+
+#### Fungsi **heapify(arr, n, i)**
+
+1. **`def heapify(arr, n, i):`**
+   - **Tujuan**: Membuat sebuah heap (binary heap) dengan elemen terbesar di root. Ini dikenal sebagai "max-heapify".
+   - **Contoh**: Untuk array `[64, 34, 25, 12, 22, 11, 90, 1]` dengan `n = 8` dan `i = 0`, kita mulai membangun heap.
+
+2. **`largest = i`**
+   - **Tujuan**: Menyimpan indeks dari elemen terbesar. Pada awalnya, diasumsikan bahwa elemen di indeks `i` adalah yang terbesar.
+
+3. **`left = 2 * i + 1`**
+   - **Tujuan**: Menghitung indeks dari anak kiri node dengan indeks `i` dalam binary heap.
+   - **Contoh**: Untuk `i = 0`, `left = 1`.
+
+4. **`right = 2 * i + 2`**
+   - **Tujuan**: Menghitung indeks dari anak kanan node dengan indeks `i`.
+   - **Contoh**: Untuk `i = 0`, `right = 2`.
+
+5. **`if left < n and arr[i] < arr[left]:`**
+   - **Tujuan**: Mengecek apakah anak kiri `left` lebih besar dari elemen induknya di `i`.
+   - **Contoh**: Jika `left = 1` dan `arr[1]` lebih besar dari `arr[0]`, `largest` akan diperbarui.
+
+6. **`largest = left`**
+   - **Tujuan**: Jika anak kiri lebih besar dari induknya, maka `largest` di-update menjadi indeks `left`.
+
+7. **`if right < n and arr[largest] < arr[right]:`**
+   - **Tujuan**: Mengecek apakah anak kanan `right` lebih besar dari elemen terbesar saat ini (antara `i` dan anak kiri).
+   - **Contoh**: Jika `right = 2` dan `arr[2]` lebih besar dari `arr[largest]`, `largest` diperbarui.
+
+8. **`largest = right`**
+   - **Tujuan**: Jika anak kanan lebih besar dari `largest`, maka `largest` di-update menjadi `right`.
+
+9. **`if largest != i:`**
+   - **Tujuan**: Jika elemen terbesar bukan elemen induk, maka dilakukan penukaran posisi antara elemen terbesar dan induknya.
+
+10. **`arr[i], arr[largest] = arr[largest], arr[i]`**
+    - **Tujuan**: Menukar elemen di indeks `i` dengan elemen di indeks `largest`.
+
+11. **`heapify(arr, n, largest)`**
+    - **Tujuan**: Rekursi untuk memastikan bahwa sub-tree yang baru ditukar juga memenuhi aturan heap.
+
+#### Fungsi **heap_sort(arr)**
+
+12. **`def heap_sort(arr):`**
+    - **Tujuan**: Fungsi utama untuk melakukan Heap Sort.
+
+13. **`n = len(arr)`**
+    - **Tujuan**: Menyimpan panjang array.
+
+14. **`for i in range(n // 2 - 1, -1, -1):`**
+    - **Tujuan**: Membuat heap dari array, dimulai dari node non-daun (bagian bawah ke atas).
+
+15. **`heapify(arr, n, i)`**
+    - **Tujuan**: Memanggil fungsi `heapify` untuk memastikan sub-tree dengan root di `i` adalah heap.
+
+16. **`for i in range(n - 1, 0, -1):`**
+    - **Tujuan**: Setelah heap terbentuk, elemen terbesar (di root) dipindahkan ke akhir array, dan sisa array di-heapify lagi untuk menemukan elemen terbesar berikutnya.
+
+17. **`arr[i], arr[0] = arr[0], arr[i]`**
+    - **Tujuan**: Menukar elemen terbesar (root) dengan elemen terakhir dari array.
+
+18. **`heapify(arr, i, 0)`**
+    - **Tujuan**: Heapify sisa array, kecuali elemen terakhir yang sudah dipindahkan ke tempat yang benar.
+
+19. **`return arr`**
+    - **Tujuan**: Mengembalikan array yang sudah terurut.
+
+20. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**
+    - **Tujuan**: Array input yang akan diurutkan.
+
+21. **`print(heap_sort(arr))`**
+    - **Output**: Setelah algoritma Heap Sort selesai, array yang sudah terurut dicetak:
+    ```
+    [1, 11, 12, 22, 25, 34, 64, 90]
+    ```
+
+### Proses Utama dalam Heap Sort:
+
+1. **Membangun Heap**:
+   - Heap Sort memulai dengan membangun **max-heap** dari array input.
+   - Max-heap adalah binary heap di mana setiap node lebih besar dari kedua anaknya, dan elemen terbesar selalu berada di root.
+
+2. **Penukaran dan Pengurutan**:
+   - Setelah heap terbentuk, elemen terbesar (root) dipindahkan ke akhir array.
+   - Heap diatur ulang untuk elemen yang tersisa dan proses ini diulang sampai array terurut.
+
+### Proses Heapify:
+
+- **Heapify** dimulai dari node non-daun yang paling bawah (di indeks `n // 2 - 1`) dan berjalan mundur ke root. Setiap kali menemukan elemen yang lebih kecil dari salah satu anaknya, elemen tersebut ditukar, dan proses ini diulang untuk memastikan heap memenuhi aturan max-heap.
+
+### Contoh Langkah Heap Sort:
+
+1. **Array Awal**: `[64, 34, 25, 12, 22, 11, 90, 1]`
+2. **Max-Heap Awal**: Setelah heapify:
+   ```
+   [90, 64, 25, 34, 22, 11, 12, 1]
+   ```
+3. **Penukaran 1**: Elemen `90` (root) ditukar dengan elemen terakhir `1`:
+   ```
+   [1, 64, 25, 34, 22, 11, 12, 90]
+   ```
+   Lalu di-heapify lagi:
+   ```
+   [64, 34, 25, 1, 22, 11, 12, 90]
+   ```
+
+4. **Penukaran 2**: Elemen `64` ditukar dengan `12`:
+   ```
+   [12, 34, 25, 1, 22, 11, 64, 90]
+   ```
+   Lalu di-heapify lagi:
+   ```
+   [34, 22, 25, 1, 12, 11, 64, 90]
+   ```
+
+5. **Proses ini berlanjut** hingga seluruh array terurut menjadi:
+   ```
+   [1, 11, 12, 22, 25, 34, 64, 90]
+   ```
+
+### Kompleksitas Waktu Heap Sort:
+
+- **Worst-case time complexity**: O(n log n) karena untuk setiap elemen kita perlu melakukan operasi heapify yang memiliki kompleksitas logaritmik, dan proses ini dilakukan untuk n elemen.
+
+---
+# Quick Sort
+
+Quick Sort menggunakan pivot untuk membagi array menjadi dua bagian dan kemudian melakukan sorting secara rekursif.
+
+```python
+def partition(arr, low, high):  # (1)
+    pivot = arr[high]  # (2)
+    i = low - 1  # (3)
+    for j in range(low, high):  # (4)
+        if arr[j] <= pivot:  # (5)
+            i += 1  # (6)
+            arr[i], arr[j] = arr[j], arr[i]  # (7)
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]  # (8)
+    return i + 1  # (9)
+
+def quick_sort(arr, low, high):  # (10)
+    if low < high:  # (11)
+        pivot = partition(arr, low, high)  # (12)
+        quick_sort(arr, low, pivot - 1)  # (13)
+        quick_sort(arr, pivot + 1, high)  # (14)
+    return arr  # (15)
+
+arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (16)
+print(quick_sort(arr, 0, len(arr) - 1))  # (17)
+```
+
+### Penjelasan Setiap Baris
+
+#### Fungsi **partition(arr, low, high)**
+
+1. **`def partition(arr, low, high):`**
+   - **Tujuan**: Fungsi ini digunakan untuk membagi array menjadi dua bagian berdasarkan **pivot** dan mengembalikan indeks posisi dari pivot yang telah dipindahkan ke posisi yang benar.
+
+2. **`pivot = arr[high]`**
+   - **Tujuan**: Pivot adalah elemen terakhir dari subarray yang diproses saat ini.
+   - **Contoh**: Untuk array `[64, 34, 25, 12, 22, 11, 90, 1]` dan `high = 7`, pivot adalah `1`.
+
+3. **`i = low - 1`**
+   - **Tujuan**: Menyiapkan indeks `i` yang menunjukkan posisi elemen terakhir yang lebih kecil atau sama dengan pivot.
+
+4. **`for j in range(low, high):`**
+   - **Tujuan**: Iterasi melalui elemen array dari indeks `low` hingga `high - 1`.
+
+5. **`if arr[j] <= pivot:`**
+   - **Tujuan**: Memeriksa apakah elemen array `arr[j]` lebih kecil atau sama dengan pivot.
+
+6. **`i += 1`**
+   - **Tujuan**: Jika elemen `arr[j]` lebih kecil dari atau sama dengan pivot, kita meningkatkan indeks `i` untuk menunjukkan bahwa elemen yang lebih kecil ini telah ditemukan.
+
+7. **`arr[i], arr[j] = arr[j], arr[i]`**
+   - **Tujuan**: Menukar elemen `arr[i]` dengan elemen `arr[j]` sehingga elemen yang lebih kecil dari pivot berada di sebelah kiri.
+
+8. **`arr[i + 1], arr[high] = arr[high], arr[i + 1]`**
+   - **Tujuan**: Setelah iterasi selesai, menukar pivot dengan elemen pertama yang lebih besar dari pivot, sehingga pivot berada di posisi yang benar dalam array.
+
+9. **`return i + 1`**
+   - **Tujuan**: Mengembalikan indeks pivot setelah diposisikan dengan benar.
+
+#### Fungsi **quick_sort(arr, low, high)**
+
+10. **`def quick_sort(arr, low, high):`**
+    - **Tujuan**: Fungsi utama untuk mengurutkan array menggunakan algoritma **Quick Sort**.
+
+11. **`if low < high:`**
+    - **Tujuan**: Kondisi rekursif, memastikan bahwa array yang akan diurutkan memiliki lebih dari satu elemen.
+
+12. **`pivot = partition(arr, low, high)`**
+    - **Tujuan**: Memanggil fungsi `partition` untuk mengatur posisi pivot dan membagi array menjadi dua bagian.
+
+13. **`quick_sort(arr, low, pivot - 1)`**
+    - **Tujuan**: Melakukan rekursi untuk mengurutkan bagian kiri array, yaitu elemen-elemen yang lebih kecil dari pivot.
+
+14. **`quick_sort(arr, pivot + 1, high)`**
+    - **Tujuan**: Melakukan rekursi untuk mengurutkan bagian kanan array, yaitu elemen-elemen yang lebih besar dari pivot.
+
+15. **`return arr`**
+    - **Tujuan**: Mengembalikan array yang sudah diurutkan.
+
+16. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**
+    - **Tujuan**: Array input yang akan diurutkan.
+
+17. **`print(quick_sort(arr, 0, len(arr) - 1))`**
+    - **Output**: Setelah algoritma Quick Sort selesai, array yang sudah diurutkan akan dicetak:
+    ```
+    [1, 11, 12, 22, 25, 34, 64, 90]
+    ```
+
+### Proses Utama dalam Quick Sort:
+
+1. **Partitioning**:
+   - Pada setiap tahap rekursi, array dipecah menjadi dua bagian dengan memilih **pivot** (elemen terakhir dalam subarray saat ini). Elemen yang lebih kecil dari pivot dipindahkan ke kiri, dan yang lebih besar dipindahkan ke kanan.
+
+2. **Rekursi**:
+   - Setelah array dibagi menjadi dua bagian, Quick Sort dipanggil secara rekursif untuk mengurutkan kedua bagian tersebut secara terpisah hingga semua elemen berada di posisi yang benar.
+
+### Contoh Langkah Quick Sort:
+
+1. **Array Awal**: `[64, 34, 25, 12, 22, 11, 90, 1]`
+2. **Langkah Pertama (Pivot = 1)**:
+   - Setelah partition dengan pivot `1`, array menjadi:
+   ```
+   [1, 34, 25, 12, 22, 11, 90, 64]
+   ```
+   Pivot `1` sudah di posisi yang benar.
+
+3. **Langkah Kedua (Pivot = 64)**:
+   - Mengurutkan bagian kanan dengan pivot `64`, array menjadi:
+   ```
+   [1, 11, 25, 12, 22, 34, 64, 90]
+   ```
+
+4. **Langkah Ketiga (Pivot = 11)**:
+   - Mengurutkan bagian kiri dengan pivot `11`, array menjadi:
+   ```
+   [1, 11, 25, 12, 22, 34, 64, 90]
+   ```
+
+5. **Langkah Keempat (Pivot = 34)**:
+   - Mengurutkan bagian kiri lagi dengan pivot `34`, array menjadi:
+   ```
+   [1, 11, 12, 22, 25, 34, 64, 90]
+   ```
+
+6. **Proses selesai** dan array terurut menjadi:
+   ```
+   [1, 11, 12, 22, 25, 34, 64, 90]
+   ```
+
+### Kompleksitas Waktu Quick Sort:
+
+- **Worst-case time complexity**: O(n²), terjadi jika pivot selalu elemen terbesar atau terkecil (misalnya, jika array sudah terurut).
+- **Average-case time complexity**: O(n log n), yang merupakan kompleksitas rata-rata dalam banyak kasus.
+
+### Kesimpulan:
+Algoritma **Quick Sort** sangat cepat dan efisien dalam mengurutkan array, terutama ketika memilih pivot yang baik sehingga membagi array menjadi dua bagian yang seimbang.
+
+---
+# Counting Sort
+
+Counting Sort bekerja dengan menghitung kemunculan setiap elemen dan kemudian menempatkannya pada posisi yang tepat.
+
+```python
+def counting_sort(arr):  # (1)
+    max_val = max(arr)  # (2)
+    count = [0] * (max_val + 1)  # (3)
+    output = [0] * len(arr)  # (4)
+
+    for num in arr:  # (5)
+        count[num] += 1  # (6)
+
+    for i in range(1, len(count)):  # (7)
+        count[i] += count[i - 1]  # (8)
+
+    for num in reversed(arr):  # (9)
+        output[count[num] - 1] = num  # (10)
+        count[num] -= 1  # (11)
+
+    return output  # (12)
+
+arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (13)
+print(counting_sort(arr))  # (14)
+```
+
+### Penjelasan Setiap Baris
+
+1. **`def counting_sort(arr):`**
+   - **Tujuan**: Mendefinisikan fungsi **Counting Sort** untuk mengurutkan array berdasarkan hitungan frekuensi.
+
+2. **`max_val = max(arr)`**
+   - **Tujuan**: Menemukan nilai maksimum dalam array. Ini akan digunakan untuk menentukan ukuran array `count`.
+   - **Contoh**: Untuk array `[64, 34, 25, 12, 22, 11, 90, 1]`, `max_val` adalah `90`.
+
+3. **`count = [0] * (max_val + 1)`**
+   - **Tujuan**: Membuat array `count` yang berisi nol, dengan panjang `max_val + 1`. Ini digunakan untuk menyimpan jumlah kemunculan setiap elemen dalam array asli.
+   - **Contoh**: Dengan `max_val = 90`, array `count` berukuran 91, semuanya nol.
+
+4. **`output = [0] * len(arr)`**
+   - **Tujuan**: Membuat array `output` yang kosong dan berukuran sama dengan array asli. Array ini akan diisi dengan elemen-elemen terurut.
+
+5. **`for num in arr:`**
+   - **Tujuan**: Iterasi melalui setiap elemen dalam array asli.
+
+6. **`count[num] += 1`**
+   - **Tujuan**: Menghitung jumlah kemunculan setiap elemen dalam array asli dan menyimpannya dalam array `count`.
+   - **Contoh**: Misal, array `[64, 34, 25, 12, 22, 11, 90, 1]` akan memperbarui `count[64]`, `count[34]`, `count[25]`, dst.
+
+7. **`for i in range(1, len(count)):`**
+   - **Tujuan**: Mengubah array `count` menjadi array yang menyimpan posisi elemen-elemen dalam array yang sudah diurutkan.
+
+8. **`count[i] += count[i - 1]`**
+   - **Tujuan**: Setiap elemen dalam array `count` diubah menjadi jumlah kumulatif dari elemen-elemen sebelumnya.
+   - **Contoh**: Jika `count[1] = 1`, `count[2] = 2`, dst., maka `count[2]` akan berisi posisi `2` dalam array output yang terurut.
+
+9. **`for num in reversed(arr):`**
+   - **Tujuan**: Iterasi mundur melalui array asli untuk memastikan stabilitas sorting. Sorting stabil memastikan bahwa elemen-elemen dengan nilai yang sama tetap pada urutan yang sama dengan urutan aslinya.
+
+10. **`output[count[num] - 1] = num`**
+    - **Tujuan**: Mengisi array `output` dengan elemen-elemen yang sudah diurutkan berdasarkan posisi yang disimpan dalam array `count`.
+    - **Contoh**: Misalnya, jika `count[64] = 6`, maka elemen `64` akan ditempatkan di indeks ke-5 (`output[5]`).
+
+11. **`count[num] -= 1`**
+    - **Tujuan**: Mengurangi hitungan di array `count` setelah elemen ditempatkan ke array `output`. Ini memastikan elemen berikutnya dengan nilai yang sama ditempatkan pada posisi yang benar.
+
+12. **`return output`**
+    - **Tujuan**: Mengembalikan array yang sudah diurutkan.
+
+#### Bagian Utama Fungsi Counting Sort
+
+13. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**
+    - **Tujuan**: Array input yang akan diurutkan.
+
+14. **`print(counting_sort(arr))`**
+    - **Output**: Array setelah diurutkan menggunakan Counting Sort:
+    ```
+    [1, 11, 12, 22, 25, 34, 64, 90]
+    ```
+
+### Proses Utama dalam Counting Sort
+
+1. **Inisialisasi `count` dan `output`**:
+   - Array `count` disiapkan dengan ukuran sebesar nilai maksimum dalam array `arr`. Setiap indeks dalam `count` menyimpan jumlah elemen dengan nilai tersebut.
+
+2. **Mengisi Array `count`**:
+   - Setiap elemen dari array asli (`arr`) diperiksa, dan array `count` diperbarui untuk menyimpan berapa kali setiap elemen muncul.
+
+3. **Membangun Array Kumulatif `count`**:
+   - Array `count` diubah menjadi array kumulatif, yang memberi tahu kita posisi akhir dari setiap elemen dalam array output yang sudah diurutkan.
+
+4. **Mengisi Array `output`**:
+   - Iterasi mundur digunakan untuk mengisi array `output` dengan elemen-elemen dari array asli berdasarkan posisi yang ditentukan dalam array kumulatif `count`. Ini memastikan sorting stabil.
+
+5. **Mengembalikan Array Terurut**:
+   - Array `output` yang berisi elemen-elemen terurut dikembalikan sebagai hasil akhir.
+
+### Contoh Langkah-Langkah Counting Sort
+
+#### Langkah 1: Inisialisasi
+- Array input: `[64, 34, 25, 12, 22, 11, 90, 1]`
+- `max_val = 90`
+- `count = [0] * 91`  (array panjang 91 berisi 0)
+- `output = [0] * 8`  (array panjang 8 berisi 0)
+
+#### Langkah 2: Hitung Frekuensi
+- Menghitung jumlah kemunculan setiap elemen di `arr` dan mengisi array `count`:
+  ```
+  count[1] = 1, count[11] = 1, count[12] = 1, count[22] = 1, count[25] = 1, count[34] = 1, count[64] = 1, count[90] = 1
+  ```
+
+#### Langkah 3: Array Kumulatif
+- Mengubah array `count` menjadi kumulatif untuk menentukan posisi elemen:
+  ```
+  count[1] = 1, count[11] = 2, count[12] = 3, count[22] = 4, count[25] = 5, count[34] = 6, count[64] = 7, count[90] = 8
+  ```
+
+#### Langkah 4: Mengisi Array Output
+- Iterasi mundur mengisi array `output`:
+  ```
+  output[7] = 90, output[6] = 64, output[5] = 34, output[4] = 25, output[3] = 22, output[2] = 12, output[1] = 11, output[0] = 1
+  ```
+
+#### Hasil Akhir
+- Array terurut: `[1, 11, 12, 22, 25, 34, 64, 90]`
+
+### Kompleksitas Waktu Counting Sort
+- **Time complexity**: O(n + k), di mana `n` adalah jumlah elemen dalam array, dan `k` adalah nilai maksimum elemen dalam array.
+- **Space complexity**: O(k + n), karena memerlukan array tambahan `count` dan `output`.
+
+### Kesimpulan
+**Counting Sort** sangat efisien jika elemen-elemen dalam array memiliki rentang nilai yang kecil, karena memanfaatkan array frekuensi untuk mengurutkan elemen-elemen dalam waktu linear.
 
 ---
 
