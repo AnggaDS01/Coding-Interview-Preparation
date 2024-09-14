@@ -2,7 +2,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./6.1. Algorithm",
+        "./6.1. Algorithm/two_sum",
         "-p",
         "test_*.py"
     ],
