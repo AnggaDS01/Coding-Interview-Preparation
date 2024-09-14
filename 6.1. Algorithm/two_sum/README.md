@@ -1,6 +1,4 @@
-Berikut adalah penjelasan langkah demi langkah untuk kode **Two Sum** yang kamu berikan:
-
-### Kode Two Sum
+# Two Sum
 
 ```python
 def two_sum(nums, target):  # (1)
