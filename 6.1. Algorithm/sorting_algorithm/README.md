@@ -157,8 +157,6 @@ print(selection_sort(arr))  # (9)
 # 3. Merge Sort
 Merge Sort membagi array menjadi sub-array kecil, kemudian menggabungkannya kembali dengan urutan yang benar.
 
-Berikut adalah penjelasan baris per baris dari kode **Merge Sort** yang kamu berikan, beserta logikanya dan output dari setiap baris kode tersebut.
-
 ### Kode Merge Sort:
 
 ```python
@@ -458,9 +456,7 @@ print(heap_sort(arr))  # (21)
 ---
 # 5. Quick Sort
 
-Berikut adalah penjelasan baris per baris dari kode **Quick Sort** yang kamu berikan, beserta logikanya dan output dari setiap baris kode tersebut.
-
-### Kode Quick Sort:
+Quick Sort menggunakan pivot untuk membagi array menjadi dua bagian dan kemudian melakukan sorting secara rekursif.
 
 ```python
 def quick_sort(arr):  # (1)
@@ -857,116 +853,106 @@ Bubble Sort bekerja dengan cara membandingkan elemen berdekatan dan menukarnya j
 
 ```python
 def bubble_sort(arr):  # (1)
-    n = len(arr)  # (2)
-    for i in range(n):  # (3)
-        swapped = False  # (4)
-        for j in range(0, n - i - 1):  # (5)
-            if arr[j] > arr[j + 1]:  # (6)
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]  # (7)
-                swapped = True  # (8)
-        if not swapped:  # (9)
-            break  # (10)
-    return arr  # (11)
+    for i in range(len(arr)):  # (2)
+        for j in range(len(arr) - 1):  # (3)
+            if arr[j] > arr[j + 1]:  # (4)
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]  # (5)
+    return arr  # (6)
 
-arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (12)
-print(bubble_sort(arr))  # (13)
+arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (7)
+print(bubble_sort(arr))  # (8)
 ```
 
-### Penjelasan Setiap Baris
+### Penjelasan Baris per Baris dan Logikanya
 
-1. **`def bubble_sort(arr):`**
-   - **Tujuan**: Mendefinisikan fungsi **Bubble Sort** yang menerima array `arr` sebagai parameter.
+1. **`def bubble_sort(arr):`**  
+   - **Tujuan**: Fungsi **`bubble_sort`** bertujuan untuk mengurutkan elemen-elemen dalam array **`arr`** dengan menggunakan algoritma **Bubble Sort**, yang bekerja dengan membandingkan elemen-elemen yang berdekatan.
+   - **Output**: Tidak ada output di sini, hanya definisi fungsi.
 
-2. **`n = len(arr)`**
-   - **Tujuan**: Menyimpan panjang array `arr` dalam variabel `n` untuk digunakan dalam looping.
+2. **`for i in range(len(arr)):`**  
+   - **Tujuan**: Loop luar ini mengontrol jumlah iterasi. Algoritma **Bubble Sort** perlu mengulang beberapa kali untuk memastikan semua elemen terurut.
+   - **Logika**: Panjang array `len(arr)` adalah 8, jadi `range(len(arr))` menghasilkan range dari 0 hingga 7. Loop ini berjalan 8 kali.
+   - **Output**: Tidak ada output, hanya pengulangan.
 
-3. **`for i in range(n):`**
-   - **Tujuan**: Iterasi pertama untuk membatasi jumlah iterasi **Bubble Sort**, dimulai dari elemen pertama hingga elemen terakhir.
+3. **`for j in range(len(arr) - 1):`**  
+   - **Tujuan**: Loop dalam ini mengontrol perbandingan antar elemen. Pada setiap iterasi loop luar, loop dalam membandingkan elemen-elemen bersebelahan.
+   - **Logika**: Panjang array adalah 8, sehingga `range(len(arr) - 1)` menghasilkan range dari 0 hingga 6. Ini memastikan kita tidak membandingkan elemen di luar batas array.
+   - **Output**: Tidak ada output, hanya pengulangan.
 
-4. **`swapped = False`**
-   - **Tujuan**: Inisialisasi variabel `swapped` sebagai indikator apakah ada elemen yang ditukar selama iterasi. Ini digunakan untuk mengoptimalkan algoritma dengan menghentikan iterasi jika array sudah terurut.
+4. **`if arr[j] > arr[j + 1]:`**  
+   - **Tujuan**: Kondisi ini memeriksa apakah elemen di `arr[j]` lebih besar dari elemen di `arr[j + 1]`. Jika iya, artinya urutannya salah, dan elemen tersebut perlu ditukar.
+   - **Output**: Kondisi logika yang hanya memeriksa apakah perlu melakukan penukaran.
 
-5. **`for j in range(0, n - i - 1):`**
-   - **Tujuan**: Iterasi dalam array untuk membandingkan elemen-elemen yang bersebelahan. `n - i - 1` mengurangi jumlah elemen yang perlu diperiksa pada setiap iterasi, karena elemen terbesar sudah berada di posisi yang benar setelah setiap iterasi.
+5. **`arr[j], arr[j + 1] = arr[j + 1], arr[j]`**  
+   - **Tujuan**: Penukaran elemen di `arr[j]` dengan elemen di `arr[j + 1]`. Jika kondisi sebelumnya terpenuhi, elemen-elemen yang tidak terurut akan ditukar.
+   - **Output**: Setiap kali penukaran dilakukan, array diperbarui.
 
-6. **`if arr[j] > arr[j + 1]:`**
-   - **Tujuan**: Memeriksa apakah elemen saat ini (`arr[j]`) lebih besar dari elemen berikutnya (`arr[j + 1]`). Jika ya, mereka akan ditukar.
+6. **`return arr`**  
+   - **Tujuan**: Setelah seluruh array diurutkan, fungsi mengembalikan array terurut tersebut.
+   - **Output**: Array `arr` yang telah diurutkan.
 
-7. **`arr[j], arr[j + 1] = arr[j + 1], arr[j]`**
-   - **Tujuan**: Menukar elemen-elemen jika mereka tidak dalam urutan yang benar (yaitu jika `arr[j] > arr[j + 1]`).
+7. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**  
+   - **Tujuan**: Array `arr` yang tidak terurut didefinisikan. Ini adalah input untuk fungsi `bubble_sort`.
+   - **Nilai**: `arr = [64, 34, 25, 12, 22, 11, 90, 1]`.
 
-8. **`swapped = True`**
-   - **Tujuan**: Mengatur `swapped` menjadi `True` karena elemen-elemen telah ditukar, yang berarti array belum terurut sepenuhnya dan iterasi berikutnya perlu dilakukan.
+8. **`print(bubble_sort(arr))`**  
+   - **Tujuan**: Memanggil fungsi `bubble_sort` dengan `arr` sebagai input, dan mencetak hasil dari array yang telah diurutkan.
+   - **Output**: Array yang sudah diurutkan akan dicetak.
 
-9. **`if not swapped:`**
-   - **Tujuan**: Memeriksa apakah tidak ada elemen yang ditukar selama iterasi. Jika `swapped` masih `False`, berarti array sudah terurut dan tidak perlu iterasi lebih lanjut.
+### Proses Eksekusi dan Output
 
-10. **`break`**
-    - **Tujuan**: Menghentikan loop utama karena array sudah terurut. Ini adalah pengoptimalan untuk menghentikan proses lebih awal.
+**Array awal**: `[64, 34, 25, 12, 22, 11, 90, 1]`
 
-11. **`return arr`**
-    - **Tujuan**: Mengembalikan array yang sudah diurutkan setelah semua iterasi selesai.
+1. **Iterasi pertama (i = 0)**:
+   - Membandingkan 64 dengan 34 → Tukar.
+   - Membandingkan 64 dengan 25 → Tukar.
+   - Membandingkan 64 dengan 12 → Tukar.
+   - Membandingkan 64 dengan 22 → Tukar.
+   - Membandingkan 64 dengan 11 → Tukar.
+   - Membandingkan 64 dengan 90 → Tidak ditukar.
+   - Membandingkan 90 dengan 1 → Tukar.
 
-12. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**
-    - **Tujuan**: Array input yang akan diurutkan.
+   **Array setelah iterasi pertama**: `[34, 25, 12, 22, 11, 64, 1, 90]`
 
-13. **`print(bubble_sort(arr))`**
-    - **Output**: Array yang sudah diurutkan setelah menjalankan **Bubble Sort**:
-    ```
-    [1, 11, 12, 22, 25, 34, 64, 90]
-    ```
+2. **Iterasi kedua (i = 1)**:
+   - Membandingkan 34 dengan 25 → Tukar.
+   - Membandingkan 34 dengan 12 → Tukar.
+   - Membandingkan 34 dengan 22 → Tukar.
+   - Membandingkan 34 dengan 11 → Tukar.
+   - Membandingkan 34 dengan 64 → Tidak ditukar.
+   - Membandingkan 64 dengan 1 → Tukar.
 
-### Bagaimana Bubble Sort Bekerja
+   **Array setelah iterasi kedua**: `[25, 12, 22, 11, 34, 1, 64, 90]`
 
-1. **Iterasi Berulang Kali**:
-   - Algoritma **Bubble Sort** bekerja dengan cara membandingkan dua elemen yang bersebelahan di dalam array, lalu menukar mereka jika urutannya salah (yaitu elemen kiri lebih besar dari elemen kanan).
+3. **Iterasi ketiga (i = 2)**:
+   - Membandingkan 25 dengan 12 → Tukar.
+   - Membandingkan 25 dengan 22 → Tukar.
+   - Membandingkan 25 dengan 11 → Tukar.
+   - Membandingkan 25 dengan 34 → Tidak ditukar.
+   - Membandingkan 34 dengan 1 → Tukar.
 
-2. **Setelah Setiap Iterasi**:
-   - Setelah satu iterasi penuh (satu loop luar), elemen terbesar di dalam subarray yang belum diurutkan akan ditempatkan di posisi terakhirnya. Oleh karena itu, jumlah elemen yang perlu diperiksa berkurang satu pada setiap iterasi berikutnya.
+   **Array setelah iterasi ketiga**: `[12, 22, 11, 25, 1, 34, 64, 90]`
 
-3. **Optimalisasi dengan Swapped**:
-   - Jika tidak ada elemen yang ditukar selama iterasi penuh (loop dalam), algoritma dapat berhenti lebih awal karena array sudah terurut. Ini dilakukan dengan memeriksa variabel `swapped`.
+Proses ini terus berulang hingga array terurut.
 
-4. **Worst-Case dan Best-Case**:
-   - **Worst-case time complexity**: O(n²), terjadi ketika array diurutkan secara terbalik.
-   - **Best-case time complexity**: O(n), terjadi ketika array sudah terurut sejak awal. Algoritma hanya membutuhkan satu iterasi untuk memastikan array sudah terurut.
-   - **Average time complexity**: O(n²), karena masih melibatkan dua loop bersarang.
+### Output Akhir:
 
-### Contoh Langkah-Langkah Bubble Sort
-
-Misalkan array input adalah:
+```python
+[1, 11, 12, 22, 25, 34, 64, 90]
 ```
-[64, 34, 25, 12, 22, 11, 90, 1]
-```
 
-#### Iterasi 1:
-- Membandingkan elemen pertama dan kedua: **64 > 34**, maka ditukar:
-  ```
-  [34, 64, 25, 12, 22, 11, 90, 1]
-  ```
-- Membandingkan elemen kedua dan ketiga: **64 > 25**, maka ditukar:
-  ```
-  [34, 25, 64, 12, 22, 11, 90, 1]
-  ```
-- Dan seterusnya, hingga elemen terbesar (90) berada di posisi terakhir:
-  ```
-  [34, 25, 12, 22, 11, 64, 1, 90]
-  ```
+### Kompleksitas Waktu dan Ruang
 
-#### Iterasi 2:
-- Proses yang sama diulangi, mengurutkan elemen terbesar berikutnya ke posisi kedua terakhir:
-  ```
-  [25, 12, 22, 11, 34, 1, 64, 90]
-  ```
+- **Waktu**:  
+  - **Kasus Terbaik (O(n))**: Ketika array sudah terurut, hanya perlu melakukan satu iterasi tanpa penukaran.
+  - **Kasus Rata-rata (O(n²))**: Setiap elemen dibandingkan dengan elemen-elemen lainnya, sehingga memerlukan `n` iterasi, dan pada setiap iterasi perlu melakukan `n - 1` perbandingan.
+  - **Kasus Terburuk (O(n²))**: Ketika array diurutkan secara terbalik, setiap elemen memerlukan penukaran dengan semua elemen lainnya.
 
-#### Iterasi 3:
-- Dan seterusnya, hingga array menjadi terurut sepenuhnya:
-  ```
-  [1, 11, 12, 22, 25, 34, 64, 90]
-  ```
+- **Ruang**:  
+  - Kompleksitas ruang adalah **O(1)**, karena tidak ada struktur data tambahan yang digunakan selain beberapa variabel penunjuk untuk penukaran.
 
-### Kesimpulan
-**Bubble Sort** adalah algoritma yang sederhana namun tidak terlalu efisien untuk data besar karena kompleksitas waktu yang buruk (O(n²)). Namun, algoritma ini mudah dipahami dan dapat dioptimalkan untuk berhenti lebih awal jika array sudah terurut.
+### Kesimpulan:
+Algoritma **Bubble Sort** adalah algoritma pengurutan sederhana yang mudah dipahami dan diimplementasikan. Namun, karena kompleksitas waktu dalam kasus rata-rata dan terburuk adalah **O(n²)**, algoritma ini kurang efisien untuk dataset yang besar.
 
 ---
 
