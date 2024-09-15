@@ -46,7 +46,7 @@ class TestSortingAlgorithms(unittest.TestCase):
 
     def test_quick_sort(self):
         for unsorted_arr, sorted_arr in self.test_cases:
-            self.assertEqual(quick_sort(unsorted_arr, 0, len(unsorted_arr) - 1), sorted_arr)
+            self.assertEqual(quick_sort(unsorted_arr), sorted_arr)
 
     def test_counting_sort(self):
         for unsorted_arr, sorted_arr in self.test_cases:

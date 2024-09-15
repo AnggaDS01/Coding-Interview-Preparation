@@ -157,140 +157,136 @@ print(selection_sort(arr))  # (9)
 # 3. Merge Sort
 Merge Sort membagi array menjadi sub-array kecil, kemudian menggabungkannya kembali dengan urutan yang benar.
 
-```py
-def merge_sort(arr):
-    if len(arr) > 1:  # (1)
-        mid = len(arr) // 2  # (2)
-        left_half = arr[:mid]  # (3)
-        right_half = arr[mid:]  # (4)
+Berikut adalah penjelasan baris per baris dari kode **Merge Sort** yang kamu berikan, beserta logikanya dan output dari setiap baris kode tersebut.
 
-        merge_sort(left_half)  # (5)
-        merge_sort(right_half)  # (6)
+### Kode Merge Sort:
 
-        i = j = k = 0  # (7)
-        while i < len(left_half) and j < len(right_half):  # (8)
-            if left_half[i] < right_half[j]:  # (9)
-                arr[k] = left_half[i]  # (10)
-                i += 1  # (11)
-            else:
-                arr[k] = right_half[j]  # (12)
-                j += 1  # (13)
-            k += 1  # (14)
+```python
+def merge(left, right):  # (1)
+    result = []  # (2)
+    while len(left) > 0 and len(right) > 0:  # (3)
+        if left[0] < right[0]:  # (4)
+            result.append(left.pop(0))  # (5)
+        else:
+            result.append(right.pop(0))  # (6)
+    if len(left) > 0:  # (7)
+        result += left  # (8)
+    if len(right) > 0:  # (9)
+        result += right  # (10)
+    return result  # (11)
 
-        while i < len(left_half):  # (15)
-            arr[k] = left_half[i]  # (16)
-            i += 1  # (17)
-            k += 1  # (18)
+def merge_sort(arr):  # (12)
+    if len(arr) <= 1:  # (13)
+        return arr  # (14)
+    mid = len(arr) // 2  # (15)
+    left = arr[:mid]  # (16)
+    right = arr[mid:]  # (17)
+    return merge(merge_sort(left), merge_sort(right))  # (18)
 
-        while j < len(right_half):  # (19)
-            arr[k] = right_half[j]  # (20)
-            j += 1  # (21)
-            k += 1  # (22)
-    return arr  # (23)
-
-arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (24)
-print(merge_sort(arr))  # (25)
+arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (19)
+print(merge_sort(arr))  # (20)
 ```
 
-1. **`if len(arr) > 1:`**
-   - **Tujuan**: Mengecek apakah panjang array lebih dari 1. Jika array hanya berisi satu elemen, ia sudah dianggap terurut. Jika lebih dari 1, kita perlu membagi array tersebut.
-   - **Contoh**: Pada awalnya, `arr` memiliki 8 elemen, sehingga proses pembagian akan dilanjutkan.
+### Penjelasan Baris per Baris:
 
-2. **`mid = len(arr) // 2`**
-   - **Tujuan**: Mencari titik tengah dari array untuk membaginya menjadi dua bagian.
-   - **Contoh**: Untuk array dengan 8 elemen, `mid` akan menjadi 4.
+1. **`def merge(left, right):`**  
+   - **Tujuan**: Fungsi **`merge`** bertugas menggabungkan dua list terurut `left` dan `right` menjadi satu list yang juga terurut. Ini adalah bagian penting dari **Merge Sort**.
+   
+2. **`result = []`**  
+   - **Tujuan**: Membuat list kosong yang akan menyimpan hasil penggabungan elemen-elemen dari `left` dan `right`.
+   - **Output**: `result` dimulai sebagai list kosong.
 
-3. **`left_half = arr[:mid]`**
-   - **Tujuan**: Membagi array menjadi setengah bagian kiri.
-   - **Contoh**: Dengan `mid = 4`, `left_half` akan menjadi `[64, 34, 25, 12]`.
+3. **`while len(left) > 0 and len(right) > 0:`**  
+   - **Tujuan**: Melakukan perulangan selama masih ada elemen yang tersisa di kedua list, `left` dan `right`. Tujuannya adalah membandingkan elemen pertama dari masing-masing list dan menambahkan yang lebih kecil ke dalam `result`.
 
-4. **`right_half = arr[mid:]`**
-   - **Tujuan**: Membagi array menjadi setengah bagian kanan.
-   - **Contoh**: Dengan `mid = 4`, `right_half` akan menjadi `[22, 11, 90, 1]`.
+4. **`if left[0] < right[0]:`**  
+   - **Tujuan**: Membandingkan elemen pertama dari `left` dan `right`. Jika elemen pertama dari `left` lebih kecil dari elemen pertama dari `right`, maka elemen tersebut akan dimasukkan ke dalam `result`.
 
-5. **`merge_sort(left_half)`**
-   - **Tujuan**: Memanggil rekursi `merge_sort` pada bagian kiri array untuk terus membaginya hingga menjadi subarray yang berisi satu elemen.
+5. **`result.append(left.pop(0))`**  
+   - **Tujuan**: Menghapus elemen pertama dari `left` (menggunakan **`pop(0)`**) dan menambahkannya ke dalam `result`. List `left` akan menyusut setelah elemen tersebut diambil.
+   - **Output**: Elemen terkecil dari `left` dipindahkan ke dalam `result`.
 
-6. **`merge_sort(right_half)`**
-   - **Tujuan**: Memanggil rekursi `merge_sort` pada bagian kanan array untuk terus membaginya hingga menjadi subarray yang berisi satu elemen.
+6. **`result.append(right.pop(0))`**  
+   - **Tujuan**: Jika elemen pertama dari `right` lebih kecil atau sama dengan elemen pertama dari `left`, maka elemen tersebut dihapus dari `right` dan dimasukkan ke dalam `result`.
+   - **Output**: Elemen terkecil dari `right` dipindahkan ke dalam `result`.
 
-7. **`i = j = k = 0`**
-   - **Tujuan**: Inisialisasi variabel indeks untuk menggabungkan kembali dua bagian array (`left_half` dan `right_half`) ke array asli (`arr`).
-   - **Contoh**: `i` untuk indeks `left_half`, `j` untuk `right_half`, dan `k` untuk array `arr`.
+7. **`if len(left) > 0:`**  
+   - **Tujuan**: Setelah perulangan selesai, jika masih ada elemen yang tersisa di `left`, mereka akan ditambahkan ke dalam `result` karena seluruh elemen di `right` sudah lebih kecil atau sama besar.
+   
+8. **`result += left`**  
+   - **Tujuan**: Menambahkan semua elemen yang tersisa di `left` ke dalam `result`.
+   - **Output**: Semua elemen tersisa dari `left` ditambahkan ke `result`.
 
-8. **`while i < len(left_half) and j < len(right_half):`**
-   - **Tujuan**: Melakukan iterasi membandingkan elemen-elemen dari `left_half` dan `right_half` untuk digabungkan kembali ke `arr`.
-   - **Contoh**: Jika `left_half = [12, 25, 34, 64]` dan `right_half = [1, 11, 22, 90]`, kita akan membandingkan setiap elemen dari kedua array.
+9. **`if len(right) > 0:`**  
+   - **Tujuan**: Jika masih ada elemen yang tersisa di `right`, tambahkan mereka ke `result` karena mereka lebih besar dari elemen di `left`.
+   
+10. **`result += right`**  
+    - **Tujuan**: Menambahkan semua elemen yang tersisa di `right` ke dalam `result`.
+    - **Output**: Semua elemen tersisa dari `right` ditambahkan ke `result`.
 
-9. **`if left_half[i] < right_half[j]:`**
-   - **Tujuan**: Jika elemen di `left_half[i]` lebih kecil dari elemen di `right_half[j]`, maka elemen `left_half[i]` ditempatkan ke `arr`.
+11. **`return result`**  
+    - **Tujuan**: Mengembalikan list `result` yang berisi penggabungan dari `left` dan `right` yang sudah diurutkan.
+    - **Output**: List `result` yang terurut.
 
-10. **`arr[k] = left_half[i]`**
-    - **Tujuan**: Menyalin elemen `left_half[i]` ke `arr[k]` jika kondisi pada baris 9 terpenuhi.
+12. **`def merge_sort(arr):`**  
+    - **Tujuan**: Fungsi **`merge_sort`** bertugas untuk mengurutkan list `arr` dengan menggunakan algoritma **Merge Sort**. Algoritma ini bekerja dengan cara **rekursif** membagi array menjadi dua bagian, mengurutkan masing-masing bagian, lalu menggabungkannya kembali dengan fungsi `merge`.
 
-11. **`i += 1`**
-    - **Tujuan**: Memperbarui indeks `i` setelah menyalin elemen dari `left_half` ke `arr`.
+13. **`if len(arr) <= 1:`**  
+    - **Tujuan**: Kondisi **basis rekursif**. Jika panjang list `arr` kurang dari atau sama dengan 1, maka list tersebut sudah terurut.
+    - **Logika**: List dengan 1 atau 0 elemen tidak memerlukan pengurutan, jadi langsung dikembalikan.
 
-12. **`arr[k] = right_half[j]`**
-    - **Tujuan**: Jika kondisi di baris 9 tidak terpenuhi, elemen `right_half[j]` yang lebih kecil ditempatkan di `arr[k]`.
+14. **`return arr`**  
+    - **Tujuan**: Mengembalikan list `arr` jika panjangnya kurang dari atau sama dengan 1.
+    - **Output**: List `arr` dikembalikan tanpa diubah.
 
-13. **`j += 1`**
-    - **Tujuan**: Memperbarui indeks `j` setelah menyalin elemen dari `right_half` ke `arr`.
+15. **`mid = len(arr) // 2`**  
+    - **Tujuan**: Menghitung **index tengah** dari `arr` agar array dapat dibagi menjadi dua bagian yang lebih kecil.
+    - **Logika**: Menggunakan operasi **pembagian integer** untuk menemukan titik tengah dari array.
+    - **Output**: Jika `arr = [64, 34, 25, 12, 22, 11, 90, 1]`, `mid = 4`.
 
-14. **`k += 1`**
-    - **Tujuan**: Memperbarui indeks `k` setelah menempatkan elemen dari `left_half` atau `right_half` ke array `arr`.
+16. **`left = arr[:mid]`**  
+    - **Tujuan**: Membuat list `left` yang berisi elemen-elemen dari array `arr` mulai dari index 0 hingga index `mid - 1`.
+    - **Logika**: Menggunakan slicing untuk membagi array menjadi dua bagian.
+    - **Output**: Jika `mid = 4`, maka `left = [64, 34, 25, 12]`.
 
-15. **`while i < len(left_half):`**
-    - **Tujuan**: Menangani sisa elemen dari `left_half` jika masih ada elemen yang belum dipindahkan ke array `arr`.
+17. **`right = arr[mid:]`**  
+    - **Tujuan**: Membuat list `right` yang berisi elemen-elemen dari array `arr` mulai dari index `mid` hingga elemen terakhir.
+    - **Logika**: Menggunakan slicing untuk membagi array.
+    - **Output**: Jika `mid = 4`, maka `right = [22, 11, 90, 1]`.
 
-16. **`arr[k] = left_half[i]`**
-    - **Tujuan**: Menyalin elemen sisa dari `left_half` ke `arr` jika `while` pada baris 8 selesai.
+18. **`return merge(merge_sort(left), merge_sort(right))`**  
+    - **Tujuan**: Memanggil **rekursif** fungsi `merge_sort` pada `left` dan `right`, kemudian menggabungkan dua bagian terurut tersebut dengan fungsi `merge`.
+    - **Logika**: Fungsi ini secara rekursif membagi array menjadi dua bagian hingga mencapai panjang 1, lalu mulai menggabungkannya kembali.
+    - **Output**: Menggabungkan hasil rekursif dari dua bagian yang terurut.
 
-17. **`i += 1`**
-    - **Tujuan**: Memperbarui indeks `i` setelah menyalin elemen dari `left_half`.
+19. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**  
+    - **Tujuan**: Mendefinisikan array yang akan diurutkan menggunakan Merge Sort.
+    - **Nilai**: `arr = [64, 34, 25, 12, 22, 11, 90, 1]`.
 
-18. **`k += 1`**
-    - **Tujuan**: Memperbarui indeks `k` setelah menyalin elemen dari `left_half`.
+20. **`print(merge_sort(arr))`**  
+    - **Tujuan**: Memanggil fungsi `merge_sort` dengan `arr` sebagai input dan mencetak hasilnya.
+    - **Logika**: Menampilkan array yang sudah diurutkan setelah Merge Sort dijalankan.
 
-19. **`while j < len(right_half):`**
-    - **Tujuan**: Menangani sisa elemen dari `right_half` jika masih ada elemen yang belum dipindahkan ke array `arr`.
+### Proses Eksekusi:
 
-20. **`arr[k] = right_half[j]`**
-    - **Tujuan**: Menyalin elemen sisa dari `right_half` ke `arr`.
+1. **Langkah 1**: Fungsi `merge_sort` dipanggil dengan `arr = [64, 34, 25, 12, 22, 11, 90, 1]`. Panjang array lebih dari 1, jadi lanjut.
+2. **Langkah 2**: Array dibagi menjadi dua bagian:
+   - `left = [64, 34, 25, 12]`
+   - `right = [22, 11, 90, 1]`
+3. **Langkah 3**: Fungsi `merge_sort` dipanggil secara rekursif pada `left` dan `right`, hingga setiap bagian dibagi menjadi sub-array yang hanya memiliki satu elemen.
+4. **Langkah 4**: Setelah setiap bagian terurut, fungsi `merge` dipanggil untuk menggabungkan mereka kembali menjadi satu array yang terurut.
+5. **Langkah 5**: Hasil akhir dari `merge_sort` untuk array tersebut adalah array yang sudah terurut
 
-21. **`j += 1`**
-    - **Tujuan**: Memperbarui indeks `j` setelah menyalin elemen dari `right_half`.
+:
 
-22. **`k += 1`**
-    - **Tujuan**: Memperbarui indeks `k` setelah menyalin elemen dari `right_half`.
+   ```python
+   [1, 11, 12, 22, 25, 34, 64, 90]
+   ```
 
-23. **`return arr`**
-    - **Tujuan**: Mengembalikan array yang sudah terurut.
-
-24. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**
-    - **Tujuan**: Array input yang akan diurutkan.
-
-25. **`print(merge_sort(arr))`**
-    - **Output**: Setelah algoritma Merge Sort selesai, array yang sudah terurut dicetak:
-    ```
-    [1, 11, 12, 22, 25, 34, 64, 90]
-    ```
-
-### Proses Iterasi Utama:
-
-1. **Pembagian Array**:
-   - Awalnya, `arr` dibagi menjadi dua: `[64, 34, 25, 12]` dan `[22, 11, 90, 1]`.
-   - Subarray ini terus dibagi sampai tersisa elemen tunggal:
-     - `[64, 34, 25, 12]` → `[64, 34]` dan `[25, 12]` → `[64]`, `[34]`, `[25]`, `[12]`.
-     - `[22, 11, 90, 1]` → `[22, 11]` dan `[90, 1]` → `[22]`, `[11]`, `[90]`, `[1]`.
-
-2. **Penggabungan Array**:
-   - Setiap subarray tunggal digabung kembali dengan membandingkan elemen-elemen dari `left_half` dan `right_half`.
-   - **Contoh Penggabungan**:
-     - `[64]` dan `[34]` → `[34, 64]`.
-     - `[25]` dan `[12]` → `[12, 25]`.
-     - `[34, 64]` dan `[12, 25]` → `[12, 25, 34, 64]`.
-     - Proses ini berlanjut hingga array sepenuhnya terurut.
+### Hasil Akhir:
+```
+[1, 11, 12, 22, 25, 34, 64, 90]
+```
 
 ### Logika Utama Merge Sort
 
@@ -462,139 +458,103 @@ print(heap_sort(arr))  # (21)
 ---
 # 5. Quick Sort
 
-Quick Sort menggunakan pivot untuk membagi array menjadi dua bagian dan kemudian melakukan sorting secara rekursif.
+Berikut adalah penjelasan baris per baris dari kode **Quick Sort** yang kamu berikan, beserta logikanya dan output dari setiap baris kode tersebut.
+
+### Kode Quick Sort:
 
 ```python
-def partition(arr, low, high):  # (1)
-    pivot = arr[high]  # (2)
-    i = low - 1  # (3)
-    for j in range(low, high):  # (4)
-        if arr[j] <= pivot:  # (5)
-            i += 1  # (6)
-            arr[i], arr[j] = arr[j], arr[i]  # (7)
-    arr[i + 1], arr[high] = arr[high], arr[i + 1]  # (8)
-    return i + 1  # (9)
+def quick_sort(arr):  # (1)
+    if len(arr) <= 1:  # (2)
+        return arr  # (3)
 
-def quick_sort(arr, low, high):  # (10)
-    if low < high:  # (11)
-        pivot = partition(arr, low, high)  # (12)
-        quick_sort(arr, low, pivot - 1)  # (13)
-        quick_sort(arr, pivot + 1, high)  # (14)
-    return arr  # (15)
+    pivot = arr[len(arr) // 2]  # (4)
+    left = [x for x in arr if x < pivot]  # (5)
+    middle = [x for x in arr if x == pivot]  # (6)
+    right = [x for x in arr if x > pivot]  # (7)
+    
+    return quick_sort(left) + middle + quick_sort(right)  # (8)
 
-arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (16)
-print(quick_sort(arr, 0, len(arr) - 1))  # (17)
+arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (9)
+print(quick_sort(arr))  # (10)
 ```
 
-### Penjelasan Setiap Baris
+### Penjelasan Baris per Baris:
 
-#### Fungsi **partition(arr, low, high)**
+1. **`def quick_sort(arr):`**  
+   - **Tujuan**: Mendefinisikan fungsi **`quick_sort`** yang menerima satu parameter `arr` (sebuah list) yang ingin diurutkan. Quick Sort adalah algoritma pengurutan berbasis **pembagian dan penaklukan (divide and conquer)**.
+   
+2. **`if len(arr) <= 1:`**  
+   - **Tujuan**: Kondisi **basis rekursif**. Jika panjang array kurang dari atau sama dengan 1, array tersebut sudah terurut (karena array dengan 0 atau 1 elemen selalu terurut).
+   - **Logika**: Jika array hanya memiliki satu elemen atau kosong, tidak perlu ada pengurutan, sehingga array tersebut langsung dikembalikan.
 
-1. **`def partition(arr, low, high):`**
-   - **Tujuan**: Fungsi ini digunakan untuk membagi array menjadi dua bagian berdasarkan **pivot** dan mengembalikan indeks posisi dari pivot yang telah dipindahkan ke posisi yang benar.
+3. **`return arr`**  
+   - **Tujuan**: Mengembalikan array `arr` jika panjangnya kurang dari atau sama dengan 1, karena array tersebut sudah terurut.
+   - **Output**: Array yang sama jika panjangnya <= 1.
 
-2. **`pivot = arr[high]`**
-   - **Tujuan**: Pivot adalah elemen terakhir dari subarray yang diproses saat ini.
-   - **Contoh**: Untuk array `[64, 34, 25, 12, 22, 11, 90, 1]` dan `high = 7`, pivot adalah `1`.
+4. **`pivot = arr[len(arr) // 2]`**  
+   - **Tujuan**: Memilih **pivot** dari array. Pivot adalah elemen yang berada di tengah array. Ini adalah elemen yang akan digunakan untuk membagi array menjadi dua bagian: elemen yang lebih kecil dari pivot dan elemen yang lebih besar dari pivot.
+   - **Logika**: Memilih elemen tengah dengan menggunakan **index tengah** dari array (`len(arr) // 2`).
+   - **Contoh**: Jika `arr = [64, 34, 25, 12, 22, 11, 90, 1]`, pivot-nya adalah elemen ke-4 (0-based index), yaitu `12`.
 
-3. **`i = low - 1`**
-   - **Tujuan**: Menyiapkan indeks `i` yang menunjukkan posisi elemen terakhir yang lebih kecil atau sama dengan pivot.
+5. **`left = [x for x in arr if x < pivot]`**  
+   - **Tujuan**: Membuat list `left` yang berisi semua elemen dari `arr` yang lebih kecil dari pivot.
+   - **Logika**: Menggunakan list comprehension untuk menyaring elemen yang lebih kecil dari pivot.
+   - **Contoh**: Jika pivot adalah `12`, maka `left = [1, 11]`.
 
-4. **`for j in range(low, high):`**
-   - **Tujuan**: Iterasi melalui elemen array dari indeks `low` hingga `high - 1`.
+6. **`middle = [x for x in arr if x == pivot]`**  
+   - **Tujuan**: Membuat list `middle` yang berisi semua elemen dari `arr` yang sama dengan pivot.
+   - **Logika**: Menggunakan list comprehension untuk menemukan elemen yang sama dengan pivot.
+   - **Contoh**: Jika pivot adalah `12`, maka `middle = [12]` karena hanya ada satu elemen yang sama dengan pivot.
 
-5. **`if arr[j] <= pivot:`**
-   - **Tujuan**: Memeriksa apakah elemen array `arr[j]` lebih kecil atau sama dengan pivot.
+7. **`right = [x for x in arr if x > pivot]`**  
+   - **Tujuan**: Membuat list `right` yang berisi semua elemen dari `arr` yang lebih besar dari pivot.
+   - **Logika**: Menggunakan list comprehension untuk menyaring elemen yang lebih besar dari pivot.
+   - **Contoh**: Jika pivot adalah `12`, maka `right = [64, 34, 25, 22, 90]`.
 
-6. **`i += 1`**
-   - **Tujuan**: Jika elemen `arr[j]` lebih kecil dari atau sama dengan pivot, kita meningkatkan indeks `i` untuk menunjukkan bahwa elemen yang lebih kecil ini telah ditemukan.
+8. **`return quick_sort(left) + middle + quick_sort(right)`**  
+   - **Tujuan**: Memanggil fungsi `quick_sort` secara **rekursif** pada bagian `left` dan `right`. Setelah itu, hasil dari pengurutan `left`, `middle`, dan `right` digabungkan menjadi satu list.
+   - **Logika**: Quick Sort membagi array menjadi tiga bagian (`left`, `middle`, `right`), lalu mengurutkan bagian `left` dan `right` secara rekursif.
+   - **Contoh**: Jika pivot adalah `12`, hasil yang diharapkan adalah penggabungan `quick_sort(left)` (rekursif untuk [1, 11]), `middle` ([12]), dan `quick_sort(right)` (rekursif untuk [64, 34, 25, 22, 90]).
 
-7. **`arr[i], arr[j] = arr[j], arr[i]`**
-   - **Tujuan**: Menukar elemen `arr[i]` dengan elemen `arr[j]` sehingga elemen yang lebih kecil dari pivot berada di sebelah kiri.
+9. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**  
+   - **Tujuan**: Mendefinisikan array yang akan diurutkan menggunakan Quick Sort.
+   - **Nilai**: `arr = [64, 34, 25, 12, 22, 11, 90, 1]`.
 
-8. **`arr[i + 1], arr[high] = arr[high], arr[i + 1]`**
-   - **Tujuan**: Setelah iterasi selesai, menukar pivot dengan elemen pertama yang lebih besar dari pivot, sehingga pivot berada di posisi yang benar dalam array.
+10. **`print(quick_sort(arr))`**  
+    - **Tujuan**: Memanggil fungsi `quick_sort` dengan `arr` sebagai input dan mencetak hasilnya.
+    - **Logika**: Menampilkan array yang sudah diurutkan setelah Quick Sort dijalankan.
 
-9. **`return i + 1`**
-   - **Tujuan**: Mengembalikan indeks pivot setelah diposisikan dengan benar.
+### Proses Eksekusi:
 
-#### Fungsi **quick_sort(arr, low, high)**
+1. **Langkah 1**: Fungsi `quick_sort` dipanggil dengan `arr = [64, 34, 25, 12, 22, 11, 90, 1]`. Panjang array lebih dari 1, jadi lanjut.
+2. **Langkah 2**: Pivot dipilih sebagai elemen tengah dari array, yaitu `12`.
+3. **Langkah 3**: Array dipecah menjadi tiga bagian:
+   - `left = [1, 11]` (elemen yang lebih kecil dari pivot `12`)
+   - `middle = [12]` (elemen yang sama dengan pivot `12`)
+   - `right = [64, 34, 25, 22, 90]` (elemen yang lebih besar dari pivot `12`)
+4. **Langkah 4**: Fungsi `quick_sort` dipanggil secara rekursif pada `left = [1, 11]`:
+   - Pivot adalah `11`.
+   - `left = [1]`, `middle = [11]`, `right = []`.
+   - Hasil rekursif: `quick_sort(left) + middle + quick_sort(right)` menghasilkan `[1, 11]`.
+5. **Langkah 5**: Fungsi `quick_sort` dipanggil secara rekursif pada `right = [64, 34, 25, 22, 90]`:
+   - Pivot adalah `25`.
+   - `left = [22]`, `middle = [25]`, `right = [64, 34, 90]`.
+   - Fungsi dipanggil lagi untuk bagian `left = [22]` (sudah terurut), dan untuk `right = [64, 34, 90]` dengan pivot `34`, dan seterusnya.
+6. **Langkah 6**: Semua hasil rekursif digabungkan dan menghasilkan array yang sudah terurut.
 
-10. **`def quick_sort(arr, low, high):`**
-    - **Tujuan**: Fungsi utama untuk mengurutkan array menggunakan algoritma **Quick Sort**.
+### Output Akhir:
 
-11. **`if low < high:`**
-    - **Tujuan**: Kondisi rekursif, memastikan bahwa array yang akan diurutkan memiliki lebih dari satu elemen.
-
-12. **`pivot = partition(arr, low, high)`**
-    - **Tujuan**: Memanggil fungsi `partition` untuk mengatur posisi pivot dan membagi array menjadi dua bagian.
-
-13. **`quick_sort(arr, low, pivot - 1)`**
-    - **Tujuan**: Melakukan rekursi untuk mengurutkan bagian kiri array, yaitu elemen-elemen yang lebih kecil dari pivot.
-
-14. **`quick_sort(arr, pivot + 1, high)`**
-    - **Tujuan**: Melakukan rekursi untuk mengurutkan bagian kanan array, yaitu elemen-elemen yang lebih besar dari pivot.
-
-15. **`return arr`**
-    - **Tujuan**: Mengembalikan array yang sudah diurutkan.
-
-16. **`arr = [64, 34, 25, 12, 22, 11, 90, 1]`**
-    - **Tujuan**: Array input yang akan diurutkan.
-
-17. **`print(quick_sort(arr, 0, len(arr) - 1))`**
-    - **Output**: Setelah algoritma Quick Sort selesai, array yang sudah diurutkan akan dicetak:
-    ```
-    [1, 11, 12, 22, 25, 34, 64, 90]
-    ```
-
-### Proses Utama dalam Quick Sort:
-
-1. **Partitioning**:
-   - Pada setiap tahap rekursi, array dipecah menjadi dua bagian dengan memilih **pivot** (elemen terakhir dalam subarray saat ini). Elemen yang lebih kecil dari pivot dipindahkan ke kiri, dan yang lebih besar dipindahkan ke kanan.
-
-2. **Rekursi**:
-   - Setelah array dibagi menjadi dua bagian, Quick Sort dipanggil secara rekursif untuk mengurutkan kedua bagian tersebut secara terpisah hingga semua elemen berada di posisi yang benar.
-
-### Contoh Langkah Quick Sort:
-
-1. **Array Awal**: `[64, 34, 25, 12, 22, 11, 90, 1]`
-2. **Langkah Pertama (Pivot = 1)**:
-   - Setelah partition dengan pivot `1`, array menjadi:
-   ```
-   [1, 34, 25, 12, 22, 11, 90, 64]
-   ```
-   Pivot `1` sudah di posisi yang benar.
-
-3. **Langkah Kedua (Pivot = 64)**:
-   - Mengurutkan bagian kanan dengan pivot `64`, array menjadi:
-   ```
-   [1, 11, 25, 12, 22, 34, 64, 90]
-   ```
-
-4. **Langkah Ketiga (Pivot = 11)**:
-   - Mengurutkan bagian kiri dengan pivot `11`, array menjadi:
-   ```
-   [1, 11, 25, 12, 22, 34, 64, 90]
-   ```
-
-5. **Langkah Keempat (Pivot = 34)**:
-   - Mengurutkan bagian kiri lagi dengan pivot `34`, array menjadi:
-   ```
-   [1, 11, 12, 22, 25, 34, 64, 90]
-   ```
-
-6. **Proses selesai** dan array terurut menjadi:
-   ```
-   [1, 11, 12, 22, 25, 34, 64, 90]
-   ```
+```python
+[1, 11, 12, 22, 25, 34, 64, 90]
+```
 
 ### Kompleksitas Waktu Quick Sort:
 
 - **Worst-case time complexity**: O(n²), terjadi jika pivot selalu elemen terbesar atau terkecil (misalnya, jika array sudah terurut).
 - **Average-case time complexity**: O(n log n), yang merupakan kompleksitas rata-rata dalam banyak kasus.
 
-### Kesimpulan:
-Algoritma **Quick Sort** sangat cepat dan efisien dalam mengurutkan array, terutama ketika memilih pivot yang baik sehingga membagi array menjadi dua bagian yang seimbang.
+### Kesimpulan
+Algoritma Quick Sort memproses array dengan membagi elemen-elemen berdasarkan pivot, dan secara rekursif mengurutkan elemen yang lebih kecil dan lebih besar dari pivot. Pivot dipilih sebagai elemen tengah, lalu array dipecah menjadi `left`, `middle`, dan `right`, dan algoritma terus berjalan sampai array sepenuhnya terurut.
 
 ---
 # 6. Counting Sort
