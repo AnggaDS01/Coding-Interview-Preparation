@@ -1,23 +1,23 @@
-def merge(left, right):
-    result = []
-    while len(left) > 0 and len(right) > 0:
-        if left[0] < right[0]:
-            result.append(left.pop(0))
+def merge(left, right):  # (1)
+    result = []  # (2)
+    while len(left) > 0 and len(right) > 0:  # (3)
+        if left[0] < right[0]:  # (4)
+            result.append(left.pop(0))  # (5)
         else:
-            result.append(right.pop(0))
-    if len(left) > 0:
-        result += left
-    if len(right) > 0:
-        result += right
-    return result
+            result.append(right.pop(0))  # (6)
+    if len(left) > 0:  # (7)
+        result += left  # (8)
+    if len(right) > 0:  # (9)
+        result += right  # (10)
+    return result  # (11)
 
-def merge_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    mid = len(arr) // 2
-    left = arr[:mid]
-    right = arr[mid:]
-    return merge(merge_sort(left), merge_sort(right))
+def merge_sort(arr):  # (12)
+    if len(arr) <= 1:  # (13)
+        return arr  # (14)
+    mid = len(arr) // 2  # (15)
+    left = arr[:mid]  # (16)
+    right = arr[mid:]  # (17)
+    return merge(merge_sort(left), merge_sort(right))  # (18)
 
-arr = [64, 34, 25, 12, 22, 11, 90, 1]
-print(merge_sort(arr))
+arr = [64, 34, 25, 12, 22, 11, 90, 1]  # (19)
+print(merge_sort(arr))  # (20)
